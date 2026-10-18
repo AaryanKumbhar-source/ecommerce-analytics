@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ApexAnalytics • Crimson Obsidian Glassmorphism</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background: linear-gradient(135deg, rgba(8, 10, 14, 0.85) 0%, rgba(14, 11, 13, 0.72) 50%, rgba(20, 10, 12, 0.88) 100%), 
+                  url('/static/background.jpg') center/cover no-repeat fixed;
+      color: #F8FAFC;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Primary Frosted Obsidian Glass Panels */
+    .frosted-glass {
+      background-color: rgba(16, 17, 22, 0.72);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 26px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 20px 45px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Sidebar Floating Glass */
+    .frosted-sidebar {
+      background-color: rgba(14, 15, 20, 0.78);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 26px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 20px 45px rgba(0, 0, 0, 0.65);
+    }
+
+    /* Tag Pills & Small Containers */
+    .frosted-pill {
+      background-color: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: rgba(255, 255, 255, 0.9);
+      border-radius: 9999px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .frosted-pill:hover {
+      background-color: rgba(255, 255, 255, 0.14);
+      border-color: rgba(239, 68, 68, 0.35);
+      color: #FFFFFF;
+      transform: translateY(-1px);
+    }
+    .frosted-pill-active {
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.35) 0%, rgba(185, 28, 28, 0.22) 100%);
+      border-color: rgba(239, 68, 68, 0.6);
+      color: #FFFFFF;
+      box-shadow: 0 4px 18px rgba(220, 38, 38, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    /* Primary CTAs: Smooth crimson-to-amber gradient */
+    .primary-pill-btn {
+      background: linear-gradient(135deg, #DC2626 0%, #B91C1C 60%, #991B1B 100%);
+      color: #FFFFFF;
+      font-weight: 600;
+      border-radius: 9999px;
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      box-shadow: 0 8px 24px rgba(220, 38, 38, 0.35);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .primary-pill-btn:hover {
+      background: linear-gradient(135deg, #EF4444 0%, #DC2626 60%, #B91C1C 100%);
+      box-shadow: 0 12px 28px rgba(239, 68, 68, 0.55);
+      transform: translateY(-1.5px);
+      filter: brightness(1.1);
+    }
+
+    /* Glowing Dots */
+    .glow-dot-crimson {
+      width: 7px;
+      height: 7px;
+      background-color: #EF4444;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #EF4444;
+    }
+    .glow-dot-amber {
+      width: 7px;
+      height: 7px;
+      background-color: #F59E0B;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #F59E0B;
+    }
+
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: rgba(239, 68, 68, 0.4);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex p-4 sm:p-6 gap-6 antialiased selection:bg-red-600/30 selection:text-white">
+
+  <!-- Floating Frosted Glass Sidebar -->
+  <aside class="w-64 frosted-sidebar flex flex-col justify-between shrink-0 h-[calc(100vh-3rem)] sticky top-6 z-30 p-5">
+    <div class="space-y-6">
+      <!-- Logo Branding -->
+      <div class="flex items-center gap-3 px-2 pt-1">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-red-600/40 to-amber-500/30 border border-red-500/30 flex items-center justify-center text-amber-300 font-black shadow-lg shadow-red-500/20 backdrop-blur-md text-base">
+          🔥
+        </div>
+        <div>
+          <div class="font-extrabold text-base tracking-tight text-white flex items-center gap-1.5">
+            ApexAnalytics
+          </div>
+          <div class="text-[11px] text-white/55 font-medium flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span> DuckDB Molten OLAP
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Pill Items -->
+      <nav class="space-y-1.5" id="nav-menu">
+        <button onclick="switchTab('dashboard')" class="nav-item active w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-semibold transition text-white bg-gradient-to-r from-red-600/35 to-rose-700/25 border border-red-500/40 shadow-lg shadow-red-950/50" data-view="dashboard">
+          <i data-lucide="layout-dashboard" class="w-4 h-4 text-red-400"></i> Executive Overview
+        </button>
+        <button onclick="switchTab('explorer')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-medium transition text-white/65 hover:text-white hover:bg-white/10" data-view="explorer">
+          <i data-lucide="table-2" class="w-4 h-4 text-amber-400"></i> Explorer & CRUD
+        </button>
+        <button onclick="switchTab('olap')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-medium transition text-white/65 hover:text-white hover:bg-white/10" data-view="olap">
+          <i data-lucide="cpu" class="w-4 h-4 text-rose-400"></i> Core OLAP Engine
+        </button>
+        <button onclick="switchTab('analytics')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-medium transition text-white/65 hover:text-white hover:bg-white/10" data-view="analytics">
+          <i data-lucide="line-chart" class="w-4 h-4 text-amber-400"></i> Molten Analytics
+        </button>
+        <button onclick="switchTab('architecture')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-medium transition text-white/65 hover:text-white hover:bg-white/10" data-view="architecture">
+          <i data-lucide="database" class="w-4 h-4 text-orange-400"></i> Architecture Info
+        </button>
+      </nav>
+    </div>
+
+    <!-- Engine Telemetry Box -->
+    <div class="p-4 rounded-2xl bg-white/[0.04] border border-white/10 space-y-2.5 backdrop-blur-md">
+      <div class="flex items-center justify-between text-xs">
+        <span class="text-white/50">Engine Runtime</span>
+        <span class="text-red-400 font-semibold flex items-center gap-1.5 text-[11px]">
+          <span class="glow-dot-crimson"></span> DuckDB v1.5
+        </span>
+      </div>
+      <div class="flex items-center justify-between text-xs">
+        <span class="text-white/50">Storage File</span>
+        <span id="sb-db-file" class="font-mono text-white/80 text-[11px] truncate max-w-[100px]" title="ecommerce_analytics.duckdb">duckdb</span>
+      </div>
+      <div class="flex items-center justify-between text-xs">
+        <span class="text-white/50">Storage Footprint</span>
+        <span id="sb-db-size" class="font-semibold text-white text-[11px]">-- KB</span>
+      </div>
+      <button onclick="fetchAllData(true)" class="frosted-pill w-full mt-2 py-2 px-3 text-[11px] font-semibold flex items-center justify-center gap-1.5">
+        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Flush & Sync Cache
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Viewport Container -->
+  <main class="flex-1 flex flex-col min-w-0 h-[calc(100vh-3rem)] overflow-y-auto custom-scroll space-y-6">
+
+    <!-- Top Floating Navbar -->
+    <header class="h-16 frosted-glass px-6 flex items-center justify-between shrink-0">
+      <div class="flex items-center gap-3">
+        <h2 id="page-title" class="text-base font-bold text-white tracking-tight">Executive Overview</h2>
+        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-red-500/15 text-red-300 border border-red-500/30 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-red-400 animate-ping"></span> Vectorized OLAP Active
+        </span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <span id="sync-timestamp" class="text-xs text-white/60 font-mono">Synced: Just Now</span>
+        <a href="/docs" target="_blank" class="frosted-pill px-3.5 py-1.5 text-xs flex items-center gap-1.5 font-semibold">
+          <i data-lucide="book-open" class="w-3.5 h-3.5"></i> OpenAPI Spec
+        </a>
+      </div>
+    </header>
+
+    <!-- Page Body Content -->
+    <div class="space-y-6">
+
+      <!-- ======================================================== -->
+      <!-- VIEW 1: EXECUTIVE DASHBOARD                              -->
+      <!-- ======================================================== -->
+      <section id="view-dashboard" class="space-y-6">
+        <!-- 5 Frosted Glass KPI Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <!-- Card 1 -->
+          <div class="frosted-glass p-5 hover:translate-y-[-2px] transition duration-200">
+            <div class="flex items-center justify-between text-xs font-semibold text-white/60 mb-2">
+              <span>Gross Revenue</span>
+              <div class="w-7 h-7 rounded-full bg-red-500/20 text-red-300 border border-red-500/30 flex items-center justify-center text-xs">💳</div>
+            </div>
+            <div id="kpi-revenue" class="text-2xl font-extrabold text-white tracking-tight mb-1">$0.00</div>
+            <div class="flex items-center gap-1.5 text-xs">
+              <span class="px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 font-semibold text-[10px] border border-red-500/30">▲ +14.2%</span>
+              <span class="text-white/50 text-[11px]">vs Q2 target</span>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="frosted-glass p-5 hover:translate-y-[-2px] transition duration-200">
+            <div class="flex items-center justify-between text-xs font-semibold text-white/60 mb-2">
+              <span>Gross Profit</span>
+              <div class="w-7 h-7 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center justify-center text-xs">📈</div>
+            </div>
+            <div id="kpi-profit" class="text-2xl font-extrabold text-white tracking-tight mb-1">$0.00</div>
+            <div class="flex items-center gap-1.5 text-xs">
+              <span id="kpi-margin-chip" class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-semibold text-[10px] border border-amber-500/30">--%</span>
+              <span class="text-white/50 text-[11px]">net margin</span>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="frosted-glass p-5 hover:translate-y-[-2px] transition duration-200">
+            <div class="flex items-center justify-between text-xs font-semibold text-white/60 mb-2">
+              <span>Total Orders</span>
+              <div class="w-7 h-7 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 flex items-center justify-center text-xs">📦</div>
+            </div>
+            <div id="kpi-orders" class="text-2xl font-extrabold text-white tracking-tight mb-1">0</div>
+            <div class="flex items-center gap-1.5 text-xs">
+              <span class="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-semibold text-[10px] border border-rose-500/30">▲ +8 new</span>
+              <span class="text-white/50 text-[11px]">completed</span>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="frosted-glass p-5 hover:translate-y-[-2px] transition duration-200">
+            <div class="flex items-center justify-between text-xs font-semibold text-white/60 mb-2">
+              <span>Active Accounts</span>
+              <div class="w-7 h-7 rounded-full bg-orange-500/20 text-orange-300 border border-orange-500/30 flex items-center justify-center text-xs">👥</div>
+            </div>
+            <div id="kpi-customers" class="text-2xl font-extrabold text-white tracking-tight mb-1">0</div>
+            <div class="flex items-center gap-1.5 text-xs">
+              <span class="px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-300 font-semibold text-[10px] border border-orange-500/30">92% rate</span>
+              <span class="text-white/50 text-[11px]">repeat volume</span>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="frosted-glass p-5 hover:translate-y-[-2px] transition duration-200">
+            <div class="flex items-center justify-between text-xs font-semibold text-white/60 mb-2">
+              <span>Avg Order Value</span>
+              <div class="w-7 h-7 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center justify-center text-xs">🎯</div>
+            </div>
+            <div id="kpi-aov" class="text-2xl font-extrabold text-white tracking-tight mb-1">$0.00</div>
+            <div class="flex items-center gap-1.5 text-xs">
+              <span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-semibold text-[10px] border border-amber-500/30">▲ +3.5%</span>
+              <span class="text-white/50 text-[11px]">basket depth</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Grid Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Velocity Chart -->
+          <div class="lg:col-span-2 frosted-glass p-6 space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-bold text-white text-base">📈 Daily Sales & 7-Day Moving Average</h3>
+                <p class="text-xs text-white/60">DuckDB window aggregation across daily transaction volume</p>
+              </div>
+              <span class="frosted-pill px-3 py-1 text-[11px] font-mono">
+                ROWS BETWEEN 6 PRECEDING
+              </span>
+            </div>
+            <div class="relative h-72 w-full pt-2">
+              <canvas id="chart-velocity"></canvas>
+            </div>
+          </div>
+
+          <!-- Department Donut -->
+          <div class="frosted-glass p-6 space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-bold text-white text-base">🛍️ Department Profit Share</h3>
+                <p class="text-xs text-white/60">Gross profit breakdown by catalog department</p>
+              </div>
+            </div>
+            <div class="relative h-72 w-full flex items-center justify-center">
+              <canvas id="chart-department"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- VIEW 2: DATA EXPLORER & CRUD                             -->
+      <!-- ======================================================== -->
+      <section id="view-explorer" class="space-y-6 hidden">
+        <div class="frosted-glass p-6 space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 class="font-bold text-white text-lg">Relational Table Explorer & Mutation</h3>
+              <p class="text-xs text-white/60">Live dynamic scan of DuckDB in-process storage</p>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <button onclick="exportCurrentTableToCsv()" class="frosted-pill px-4 py-2 text-xs font-semibold flex items-center gap-1.5">
+                <i data-lucide="download" class="w-4 h-4"></i> Export CSV
+              </button>
+              <button onclick="openProductModal()" class="primary-pill-btn px-5 py-2 text-xs flex items-center gap-1.5">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i> Add New Product
+              </button>
+            </div>
+          </div>
+
+          <!-- Table Pills & Search -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10">
+            <div class="flex flex-wrap gap-1.5" id="table-pills">
+              <button onclick="loadTable('products')" class="tbl-btn frosted-pill frosted-pill-active px-3.5 py-1.5 text-xs font-semibold" data-tbl="products">products</button>
+              <button onclick="loadTable('customers')" class="tbl-btn frosted-pill px-3.5 py-1.5 text-xs font-semibold" data-tbl="customers">customers</button>
+              <button onclick="loadTable('orders')" class="tbl-btn frosted-pill px-3.5 py-1.5 text-xs font-semibold" data-tbl="orders">orders</button>
+              <button onclick="loadTable('order_items')" class="tbl-btn frosted-pill px-3.5 py-1.5 text-xs font-semibold" data-tbl="order_items">order_items</button>
+              <button onclick="loadTable('categories')" class="tbl-btn frosted-pill px-3.5 py-1.5 text-xs font-semibold" data-tbl="categories">categories</button>
+              <button onclick="loadTable('customer_interactions')" class="tbl-btn frosted-pill px-3.5 py-1.5 text-xs font-semibold" data-tbl="customer_interactions">customer_interactions</button>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <div class="relative">
+                <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-2.5 text-white/40"></i>
+                <input id="tbl-search" type="text" onkeyup="handleTableSearch(event)" placeholder="Search table..." class="pl-9 pr-3.5 py-1.5 rounded-full text-xs bg-white/[0.07] border border-white/15 text-white placeholder-white/40 focus:outline-none focus:border-white/40 w-48 sm:w-60" />
+              </div>
+              <select id="tbl-limit" onchange="loadTable()" class="px-3 py-1.5 rounded-full text-xs bg-white/[0.07] border border-white/15 text-white/80 focus:outline-none">
+                <option value="15" class="bg-slate-900 text-white">15 rows</option>
+                <option value="25" selected class="bg-slate-900 text-white">25 rows</option>
+                <option value="50" class="bg-slate-900 text-white">50 rows</option>
+                <option value="100" class="bg-slate-900 text-white">100 rows</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Dynamic Data Table Output -->
+          <div class="overflow-x-auto custom-scroll rounded-2xl border border-white/10 bg-black/20 min-h-[160px] max-h-96">
+            <table class="w-full text-left text-xs" id="dynamic-table">
+              <thead class="bg-white/[0.06] text-white/80 uppercase tracking-wider font-semibold sticky top-0 backdrop-blur-md" id="dynamic-table-head">
+                <tr><th class="p-3.5">Loading...</th></tr>
+              </thead>
+              <tbody class="divide-y divide-white/[0.06] text-white/90" id="dynamic-table-body">
+                <tr>
+                  <td class="p-8 text-center text-white/60">
+                    <div class="flex flex-col items-center justify-center gap-2.5">
+                      <div class="w-6 h-6 border-2 border-red-500 border-t-transparent rounded-full animate-spin"></div>
+                      <span class="text-xs">Scanning DuckDB columnar tables...</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="table-summary-bar" class="text-xs text-white/60 flex items-center justify-between">
+            <span>Showing records</span>
+            <span class="text-red-400 font-semibold flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span> Zero-Copy Scan
+            </span>
+          </div>
+        </div>
+
+        <!-- SQL Console Card -->
+        <div class="frosted-glass p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="font-bold text-white text-base flex items-center gap-2">
+                <i data-lucide="terminal" class="w-4 h-4 text-red-400"></i> Read-Only Interactive SQL Console
+              </h4>
+              <p class="text-xs text-white/60">Execute arbitrary SELECT queries directly against DuckDB memory</p>
+            </div>
+            <span class="frosted-pill px-3 py-1 text-xs font-mono">DuckDB v1.5 Kernel</span>
+          </div>
+
+          <!-- Quick Presets -->
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs text-white/60 font-semibold">Quick Presets:</span>
+            <button onclick="runPresetQuery('margin')" class="frosted-pill px-3.5 py-1.5 text-xs font-semibold flex items-center gap-1.5">
+              <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400"></i> Top 5 Products by Margin
+            </button>
+            <button onclick="runPresetQuery('ltv')" class="frosted-pill px-3.5 py-1.5 text-xs font-semibold flex items-center gap-1.5">
+              <i data-lucide="users" class="w-3.5 h-3.5 text-rose-400"></i> Customer Lifetime Value
+            </button>
+            <button onclick="runPresetQuery('velocity')" class="frosted-pill px-3.5 py-1.5 text-xs font-semibold flex items-center gap-1.5">
+              <i data-lucide="trending-up" class="w-3.5 h-3.5 text-red-400"></i> Daily Sales Velocity
+            </button>
+          </div>
+
+          <div class="relative">
+            <textarea id="sql-input" rows="3" class="w-full bg-black/50 font-mono text-xs text-amber-100 p-3.5 rounded-2xl border border-white/10 focus:outline-none focus:border-red-500/50" placeholder="SELECT * FROM products LIMIT 10;">SELECT * FROM products LIMIT 5;</textarea>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <span id="sql-timer" class="text-xs text-white/60 font-mono">Ready to execute</span>
+            <button onclick="executeConsoleSql()" class="primary-pill-btn px-5 py-2 text-xs flex items-center gap-1.5">
+              <i data-lucide="play" class="w-3.5 h-3.5"></i> Run Query
+            </button>
+          </div>
+
+          <!-- Console Output -->
+          <div id="sql-results-container" class="overflow-x-auto custom-scroll rounded-2xl border border-white/10 bg-black/40 max-h-64 hidden">
+            <table class="w-full text-left text-xs font-mono" id="sql-table">
+              <thead class="bg-white/[0.08] text-white/70 sticky top-0" id="sql-table-head"></thead>
+              <tbody class="divide-y divide-white/[0.06] text-white/90" id="sql-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- VIEW 3: CORE OLAP QUERIES                                -->
+      <!-- ======================================================== -->
+      <section id="view-olap" class="space-y-6 hidden">
+        <div class="frosted-glass p-6 space-y-4">
+          <div>
+            <h3 class="font-bold text-white text-lg">DuckDB Advanced OLAP Primitives</h3>
+            <p class="text-xs text-white/60">Complex analytical queries demonstrating sliding frames, QUALIFY clause, and vectorized performance</p>
+          </div>
+
+          <!-- Query Selection Tabs -->
+          <div class="flex flex-wrap gap-2 border-b border-white/10 pb-3" id="olap-tabs">
+            <button onclick="showOlapQuery(1)" class="olap-tab-btn frosted-pill frosted-pill-active px-4 py-2 text-xs font-semibold" data-q="1">1. Moving Avg Windows</button>
+            <button onclick="showOlapQuery(2)" class="olap-tab-btn frosted-pill px-4 py-2 text-xs font-medium" data-q="2">2. RFM & QUALIFY</button>
+            <button onclick="showOlapQuery(3)" class="olap-tab-btn frosted-pill px-4 py-2 text-xs font-medium" data-q="3">3. Pareto (80/20 Rule)</button>
+            <button onclick="showOlapQuery(4)" class="olap-tab-btn frosted-pill px-4 py-2 text-xs font-medium" data-q="4">4. Clickstream Funnel</button>
+          </div>
+
+          <!-- Description Banner -->
+          <div id="olap-desc" class="p-4 rounded-2xl bg-white/[0.05] border border-white/10 text-xs text-white/85 leading-relaxed">
+            <!-- Dynamic Description -->
+          </div>
+
+          <!-- Tabular Results -->
+          <div class="overflow-x-auto custom-scroll rounded-2xl border border-white/10 bg-black/25 max-h-96">
+            <table class="w-full text-left text-xs" id="olap-table">
+              <thead class="bg-white/[0.08] text-white/80 font-semibold sticky top-0 backdrop-blur-md" id="olap-table-head"></thead>
+              <tbody class="divide-y divide-white/[0.06] text-white/90" id="olap-table-body"></tbody>
+            </table>
+          </div>
+
+          <!-- Raw SQL Box -->
+          <div class="space-y-1.5">
+            <span class="text-xs text-white/60 font-mono font-semibold">DuckDB SQL Definition:</span>
+            <pre class="p-4 rounded-2xl bg-black/40 border border-white/10 text-cyan-300 text-xs font-mono overflow-x-auto custom-scroll" id="olap-sql-code"></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- VIEW 4: VISUAL ANALYTICS SUITE                           -->
+      <!-- ======================================================== -->
+      <section id="view-analytics" class="space-y-6 hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Pareto Chart -->
+          <div class="frosted-glass p-6 space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <h4 class="font-bold text-white text-base">⚖️ Pareto Cumulative Profit Curve (80/20)</h4>
+                <p class="text-xs text-white/60">Products ranked by gross profit with 80% boundary line</p>
+              </div>
+            </div>
+            <div class="relative h-80 w-full pt-2">
+              <canvas id="chart-pareto"></canvas>
+            </div>
+          </div>
+
+          <!-- Funnel Conversion Stages -->
+          <div class="frosted-glass p-6 space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <h4 class="font-bold text-white text-base">📊 Multi-Stage Funnel by Customer Segment</h4>
+                <p class="text-xs text-white/60">Event progression from view to cart addition and purchase</p>
+              </div>
+            </div>
+            <div class="relative h-80 w-full pt-2">
+              <canvas id="chart-funnel"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- RFM Scatter Plot -->
+        <div class="frosted-glass p-6 space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="font-bold text-white text-base">🎯 Customer RFM Persona Distribution</h4>
+              <p class="text-xs text-white/60">Recency (Days) vs Monetary Spend ($) grouped by RFM Tier</p>
+            </div>
+          </div>
+          <div class="relative h-80 w-full pt-2">
+            <canvas id="chart-rfm"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- VIEW 5: ARCHITECTURE & ENGINE                            -->
+      <!-- ======================================================== -->
+      <section id="view-architecture" class="space-y-6 hidden">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="frosted-glass p-6 space-y-2">
+            <div class="font-bold text-white text-base flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-300 text-xs flex items-center justify-center font-bold">01</span> SIMD Vectorization
+            </div>
+            <p class="text-xs text-white/65 leading-relaxed">
+              Processes analytical scans in CPU-cache-aligned columnar chunks using hardware vector instructions, preventing tuple deserialization overhead found in row-store RDBMS.
+            </p>
+          </div>
+          <div class="frosted-glass p-6 space-y-2">
+            <div class="font-bold text-white text-base flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-300 text-xs flex items-center justify-center font-bold">02</span> In-Process Embedded
+            </div>
+            <p class="text-xs text-white/65 leading-relaxed">
+              Runs in-process in the application runtime without daemon latency, TCP socket serialization, or network hops—combining SQLite simplicity with warehouse power.
+            </p>
+          </div>
+          <div class="frosted-glass p-6 space-y-2">
+            <div class="font-bold text-white text-base flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-violet-500/20 text-violet-300 text-xs flex items-center justify-center font-bold">03</span> Modern OLAP SQL
+            </div>
+            <p class="text-xs text-white/65 leading-relaxed">
+              Native syntax support for <code>QUALIFY</code>, <code>GROUP BY ALL</code>, sliding window aggregations, and zero-copy Apache Arrow / Pandas interoperability.
+            </p>
+          </div>
+        </div>
+
+        <!-- Relational Schema Status Table -->
+        <div class="frosted-glass p-6 space-y-4">
+          <h4 class="font-bold text-white text-base">Relational Schema Topology</h4>
+          <div class="overflow-x-auto custom-scroll rounded-2xl border border-white/10 bg-black/20">
+            <table class="w-full text-left text-xs" id="arch-schema-table">
+              <thead class="bg-white/[0.08] text-white/80 uppercase tracking-wider font-semibold">
+                <tr>
+                  <th class="p-3.5">Table Name</th>
+                  <th class="p-3.5">Total Rows</th>
+                  <th class="p-3.5">Columns</th>
+                  <th class="p-3.5">Storage Engine</th>
+                  <th class="p-3.5">State</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/[0.06] text-white/90" id="arch-schema-body">
+                <tr><td colspan="5" class="p-4 text-center text-white/50">Loading schema metrics...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Live Runtime Settings -->
+        <div class="frosted-glass p-6 space-y-4">
+          <h4 class="font-bold text-white text-base">Live DuckDB Kernel Settings</h4>
+          <div class="overflow-x-auto custom-scroll rounded-2xl border border-white/10 bg-black/20">
+            <table class="w-full text-left text-xs font-mono" id="arch-settings-table">
+              <thead class="bg-white/[0.08] text-white/80 uppercase tracking-wider font-semibold">
+                <tr>
+                  <th class="p-3.5">Setting</th>
+                  <th class="p-3.5">Current Value</th>
+                  <th class="p-3.5">Description</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/[0.06] text-white/90" id="arch-settings-body">
+                <tr><td colspan="3" class="p-4 text-center text-white/50">Loading settings...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: ADD PRODUCT FORM (FROSTED SPATIAL GLASS)          -->
+  <!-- ======================================================== -->
+  <div id="product-modal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center hidden" onclick="handleBackdropClick(event)">
+    <div class="frosted-glass p-7 max-w-lg w-full m-4 space-y-5 border border-white/20 shadow-2xl" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h3 class="font-bold text-white text-base flex items-center gap-2">
+          <i data-lucide="box" class="w-4 h-4 text-red-400"></i> Insert Product Entity
+        </h3>
+        <button onclick="closeProductModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white/80 flex items-center justify-center transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <form id="add-product-form" onsubmit="submitProductForm(event)" class="space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-white/70 mb-1">Product ID</label>
+            <input type="number" id="p-id" required min="200" max="99999" value="315" class="w-full px-3.5 py-2.5 rounded-2xl text-xs bg-white/[0.07] border border-white/15 text-white focus:outline-none focus:border-red-500/60" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-white/70 mb-1">Category</label>
+            <select id="p-cat" required class="w-full px-3.5 py-2.5 rounded-2xl text-xs bg-slate-900 border border-white/15 text-white focus:outline-none focus:border-red-500/60"></select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-white/70 mb-1">Product Name</label>
+          <input type="text" id="p-name" required placeholder="e.g. Ergonomic Spatial Split Keyboard" class="w-full px-3.5 py-2.5 rounded-2xl text-xs bg-white/[0.07] border border-white/15 text-white focus:outline-none focus:border-red-500/60" />
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-white/70 mb-1">Selling Price ($)</label>
+            <input type="number" step="0.01" id="p-price" required min="1" value="199.99" class="w-full px-3.5 py-2.5 rounded-2xl text-xs bg-white/[0.07] border border-white/15 text-white focus:outline-none focus:border-red-500/60" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-white/70 mb-1">Cost Price ($)</label>
+            <input type="number" step="0.01" id="p-cost" required min="0.5" value="95.00" class="w-full px-3.5 py-2.5 rounded-2xl text-xs bg-white/[0.07] border border-white/15 text-white focus:outline-none focus:border-red-500/60" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-white/70 mb-1">Stock Level</label>
+            <input type="number" id="p-stock" required min="0" value="45" class="w-full px-3.5 py-2.5 rounded-2xl text-xs bg-white/[0.07] border border-white/15 text-white focus:outline-none focus:border-red-500/60" />
+          </div>
+        </div>
+
+        <div id="modal-error" class="text-xs text-rose-300 bg-rose-500/20 border border-rose-500/30 p-3 rounded-2xl hidden"></div>
+
+        <div class="flex items-center justify-end gap-2.5 pt-2 border-t border-white/10">
+          <button type="button" onclick="closeProductModal()" class="frosted-pill px-4 py-2 text-xs">Dismiss (Esc)</button>
+          <button type="submit" id="btn-submit-product" class="primary-pill-btn px-5 py-2 text-xs flex items-center gap-1.5">
+            <i data-lucide="check" class="w-4 h-4"></i> Commit to DuckDB
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Frosted Glass Toast Notification (Top-Right) -->
+  <div id="toast-container" class="fixed top-6 right-6 z-50 space-y-2 pointer-events-none"></div>
+
+  <!-- Application Logic -->
+  <script>
+    // State Store
+    let currentTable = 'products';
+    let currentTableData = [];
+    let chartVelocityInst = null;
+    let chartDeptInst = null;
+    let chartParetoInst = null;
+    let chartFunnelInst = null;
+    let chartRfmInst = null;
+    let categoriesCache = [];
+
+    // SQL Presets Map
+    const sqlPresetQueries = {
+      margin: "SELECT product_name, category_id, unit_price, cost_price, ROUND(((unit_price - cost_price)/unit_price)*100, 1) AS margin_pct FROM products ORDER BY margin_pct DESC LIMIT 5;",
+      ltv: "SELECT c.customer_name, c.segment, c.city, COUNT(DISTINCT o.order_id) AS total_orders, ROUND(SUM(oi.quantity * oi.unit_price * (1 - oi.discount)), 2) AS total_spent FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id WHERE o.status != 'Cancelled' GROUP BY ALL ORDER BY total_spent DESC LIMIT 8;",
+      velocity: "SELECT o.order_date, COUNT(DISTINCT o.order_id) AS total_orders, ROUND(SUM(oi.quantity * oi.unit_price * (1 - oi.discount)), 2) AS daily_revenue FROM orders o JOIN order_items oi ON o.order_id = oi.order_id WHERE o.status != 'Cancelled' GROUP BY o.order_date ORDER BY o.order_date DESC LIMIT 10;"
+    };
+
+    // Initialize Lucide icons and listeners
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      fetchAllData();
+      loadCategoriesDropdown();
+
+      // Keyboard listener: Escape closes modal
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeProductModal();
+      });
+    });
+
+    // Toast Notification (Frosted Obsidian Pill)
+    function showToast(message, type = 'success') {
+      const c = document.getElementById('toast-container');
+      const el = document.createElement('div');
+      const bg = type === 'success' 
+        ? 'bg-slate-950/90 border-red-500/40 text-red-200' 
+        : 'bg-slate-950/90 border-amber-500/40 text-amber-200';
+      el.className = `pointer-events-auto px-4 py-3 rounded-2xl border backdrop-blur-xl text-xs font-semibold shadow-2xl flex items-center gap-2.5 transform transition-all duration-300 translate-y-[-8px] opacity-0 ${bg}`;
+      el.innerHTML = `<span>${type === 'success' ? '✔' : '✖'}</span> <span>${message}</span>`;
+      c.appendChild(el);
+      setTimeout(() => el.classList.remove('translate-y-[-8px]', 'opacity-0'), 10);
+      setTimeout(() => {
+        el.classList.add('opacity-0', 'translate-y-[-8px]');
+        setTimeout(() => el.remove(), 300);
+      }, 3500);
+    }
+
+    // Tab Navigation
+    function switchTab(viewName) {
+      document.querySelectorAll('#nav-menu .nav-item').forEach(b => {
+        if (b.dataset.view === viewName) {
+          b.className = "nav-item active w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-semibold transition text-white bg-gradient-to-r from-red-600/35 to-rose-700/25 border border-red-500/40 shadow-lg shadow-red-950/50";
+        } else {
+          b.className = "nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-medium transition text-white/65 hover:text-white hover:bg-white/10";
+        }
+      });
+
+      const views = ['dashboard', 'explorer', 'olap', 'analytics', 'architecture'];
+      views.forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        if (v === viewName) {
+          el.classList.remove('hidden');
+        } else {
+          el.classList.add('hidden');
+        }
+      });
+
+      const titles = {
+        'dashboard': 'Executive Overview',
+        'explorer': 'Data Explorer & CRUD Management',
+        'olap': 'Core OLAP Analytical Queries',
+        'analytics': 'Spatial Visual Analytics Suite',
+        'architecture': 'DuckDB Architecture & Engine Details'
+      };
+      document.getElementById('page-title').innerText = titles[viewName];
+
+      if (viewName === 'explorer') loadTable(currentTable);
+      if (viewName === 'olap') showOlapQuery(1);
+      if (viewName === 'analytics') renderVisualAnalytics();
+      if (viewName === 'architecture') loadArchitecture();
+      lucide.createIcons();
+    }
+
+    // Fetch Global Data
+    async function fetchAllData(isManual = false) {
+      try {
+        const [kpis, velocity, pareto] = await Promise.all([
+          fetch('/api/kpis').then(r => r.json()),
+          fetch('/api/charts/velocity').then(r => r.json()),
+          fetch('/api/charts/pareto').then(r => r.json()),
+        ]);
+
+        // Populate KPIs
+        document.getElementById('kpi-revenue').innerText = `$${Number(kpis.total_revenue || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        document.getElementById('kpi-profit').innerText = `$${Number(kpis.gross_profit || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        document.getElementById('kpi-orders').innerText = Number(kpis.total_orders || 0).toLocaleString();
+        document.getElementById('kpi-customers').innerText = Number(kpis.active_customers || 0).toLocaleString();
+        document.getElementById('kpi-aov').innerText = `$${Number(kpis.aov || 0).toFixed(2)}`;
+        document.getElementById('kpi-margin-chip').innerText = `${kpis.overall_margin_pct || 0}%`;
+
+        // Render Dashboard Charts with Frosted Glass Theme
+        renderVelocityChart(velocity);
+        renderDepartmentChart(pareto);
+
+        // Update Architecture brief in sidebar
+        const arch = await fetch('/api/architecture').then(r => r.json());
+        document.getElementById('sb-db-file').innerText = arch.db_file;
+        document.getElementById('sb-db-size').innerText = `${arch.storage_kb} KB`;
+
+        const now = new Date();
+        document.getElementById('sync-timestamp').innerText = `Synced: ${now.toLocaleTimeString()}`;
+
+        if (isManual) showToast('Database cache refreshed successfully.');
+      } catch (err) {
+        console.error('Fetch error:', err);
+        showToast('Error syncing with DuckDB API', 'error');
+      }
+    }
+
+    // 1. Chart: Revenue Velocity (Fiery Crimson & Ember Theme)
+    function renderVelocityChart(data) {
+      const ctx = document.getElementById('chart-velocity').getContext('2d');
+      if (chartVelocityInst) chartVelocityInst.destroy();
+
+      const labels = data.map(d => d.order_date);
+      const daily = data.map(d => d.daily_revenue);
+      const rolling = data.map(d => d.rolling_avg_rev);
+
+      chartVelocityInst = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              type: 'line',
+              label: '7-Day Moving Avg',
+              data: rolling,
+              borderColor: '#F59E0B',
+              backgroundColor: '#F59E0B',
+              borderWidth: 2.5,
+              tension: 0.35,
+              pointRadius: 0,
+              yAxisID: 'y',
+            },
+            {
+              type: 'bar',
+              label: 'Daily Revenue',
+              data: daily,
+              backgroundColor: 'rgba(239, 68, 68, 0.45)',
+              borderColor: 'rgba(239, 68, 68, 0.9)',
+              borderWidth: 1,
+              borderRadius: 6,
+              yAxisID: 'y',
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: 'rgba(255, 255, 255, 0.85)', font: { family: 'Plus Jakarta Sans', size: 11 } } },
+            tooltip: {
+              backgroundColor: 'rgba(15, 16, 20, 0.92)',
+              borderColor: 'rgba(239, 68, 68, 0.3)',
+              borderWidth: 1,
+              cornerRadius: 12,
+              padding: 10,
+              titleFont: { family: 'Plus Jakarta Sans', weight: 'bold', size: 12 },
+              bodyFont: { family: 'Plus Jakarta Sans', size: 11 },
+              callbacks: {
+                label: ctx => ` ${ctx.dataset.label}: $${Number(ctx.raw).toLocaleString(undefined, {minimumFractionDigits: 2})}`
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: 'rgba(255, 255, 255, 0.65)', font: { size: 10 }, maxTicksLimit: 12 }
+            },
+            y: {
+              grid: { color: 'rgba(255, 255, 255, 0.06)' },
+              ticks: {
+                color: 'rgba(255, 255, 255, 0.65)',
+                font: { size: 10 },
+                callback: val => `$${val.toLocaleString()}`
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // 2. Chart: Department Donut (Fiery Molten Palette)
+    function renderDepartmentChart(paretoData) {
+      const ctx = document.getElementById('chart-department').getContext('2d');
+      if (chartDeptInst) chartDeptInst.destroy();
+
+      const deptMap = {};
+      paretoData.forEach(p => {
+        deptMap[p.department] = (deptMap[p.department] || 0) + Number(p.total_profit);
+      });
+
+      const labels = Object.keys(deptMap);
+      const values = Object.values(deptMap);
+
+      chartDeptInst = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: [
+              'rgba(239, 68, 68, 0.85)',   // Fiery Vermilion
+              'rgba(245, 158, 11, 0.85)',  // Warm Amber
+              'rgba(251, 113, 133, 0.85)', // Neon Coral
+              'rgba(249, 115, 22, 0.85)',  // Blazing Orange
+              'rgba(185, 28, 28, 0.85)'    // Molten Crimson
+            ],
+            borderColor: 'rgba(16, 17, 22, 0.9)',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '68%',
+          plugins: {
+            legend: { position: 'bottom', labels: { color: 'rgba(255, 255, 255, 0.85)', font: { size: 10 }, boxWidth: 10 } },
+            tooltip: {
+              backgroundColor: 'rgba(15, 16, 20, 0.92)',
+              borderColor: 'rgba(239, 68, 68, 0.3)',
+              borderWidth: 1,
+              cornerRadius: 12,
+              callbacks: {
+                label: ctx => ` ${ctx.label}: $${Number(ctx.raw).toLocaleString(undefined, {minimumFractionDigits: 2})}`
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // ========================================================
+    // Table Explorer Functions & CSV Export
+    // ========================================================
+    async function loadTable(tblName = null) {
+      if (tblName) currentTable = tblName;
+
+      // Update pill buttons
+      document.querySelectorAll('#table-pills .tbl-btn').forEach(btn => {
+        if (btn.dataset.tbl === currentTable) {
+          btn.className = "tbl-btn frosted-pill frosted-pill-active px-3.5 py-1.5 text-xs font-semibold";
+        } else {
+          btn.className = "tbl-btn frosted-pill px-3.5 py-1.5 text-xs font-semibold";
+        }
+      });
+
+      const searchVal = document.getElementById('tbl-search').value.trim();
+      const limitVal = document.getElementById('tbl-limit').value;
+      const tbody = document.getElementById('dynamic-table-body');
+
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="10" class="p-8 text-center text-white/60">
+            <div class="flex flex-col items-center justify-center gap-2.5">
+              <div class="w-6 h-6 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
+              <span class="text-xs">Scanning DuckDB columnar tables...</span>
+            </div>
+          </td>
+        </tr>
+      `;
+
+      try {
+        let url = `/api/tables/${currentTable}?limit=${limitVal}`;
+        if (searchVal) url += `&search=${encodeURIComponent(searchVal)}`;
+
+        const res = await fetch(url).then(r => r.json());
+        currentTableData = res.data || [];
+        renderTableOutput(res.columns, currentTableData);
+        document.getElementById('table-summary-bar').innerHTML = `
+          <span>Showing <b>${res.returned_rows}</b> of <b>${res.total_rows}</b> rows in <code>${currentTable}</code></span>
+          <span class="text-emerald-400 font-semibold flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Zero-Copy Scan
+          </span>
+        `;
+      } catch (err) {
+        console.error('Table error:', err);
+        tbody.innerHTML = `<tr><td colspan="10" class="p-4 text-center text-rose-400">Error loading table data: ${err}</td></tr>`;
+      }
+    }
+
+    function handleTableSearch(e) {
+      if (e.key === 'Enter' || e.target.value.length === 0) {
+        loadTable();
+      }
+    }
+
+    function exportCurrentTableToCsv() {
+      if (!currentTableData || currentTableData.length === 0) {
+        showToast('No table rows available to export.', 'error');
+        return;
+      }
+
+      const headers = Object.keys(currentTableData[0]);
+      const csvRows = [headers.join(',')];
+
+      for (const row of currentTableData) {
+        const values = headers.map(header => {
+          let val = row[header];
+          if (val === null || val === undefined) return '""';
+          const escaped = ('' + val).replace(/"/g, '""');
+          return `"${escaped}"`;
+        });
+        csvRows.push(values.join(','));
+      }
+
+      const csvString = csvRows.join('\n');
+      const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `${currentTable}_export_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast(`Exported ${currentTableData.length} records to CSV!`);
+    }
+
+    function renderTableOutput(columns, rows) {
+      const thead = document.getElementById('dynamic-table-head');
+      const tbody = document.getElementById('dynamic-table-body');
+
+      if (!columns || columns.length === 0) {
+        thead.innerHTML = '<tr><th class="p-3.5">No Columns</th></tr>';
+        tbody.innerHTML = '<tr><td class="p-4 text-center text-white/50">No data available.</td></tr>';
+        return;
+      }
+
+      thead.innerHTML = `<tr>${columns.map(c => `<th class="p-3.5 whitespace-nowrap">${c}</th>`).join('')}</tr>`;
+
+      if (!rows || rows.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="${columns.length}" class="p-8 text-center text-white/50">
+              <div class="flex flex-col items-center justify-center gap-2">
+                <i data-lucide="inbox" class="w-8 h-8 text-white/40"></i>
+                <span class="font-semibold text-white/80">No matching records found</span>
+                <span class="text-xs text-white/40">Try modifying your keyword search or select another table</span>
+              </div>
+            </td>
+          </tr>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      tbody.innerHTML = rows.map(r => {
+        return `<tr class="hover:bg-white/[0.04] transition">${
+          columns.map(c => {
+            let val = r[c];
+            const valStr = String(val || '');
+            if (valStr === 'Completed' || valStr === 'Active') {
+              return `<td class="p-3.5 whitespace-nowrap"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">${valStr}</span></td>`;
+            } else if (valStr === 'Pending' || valStr === 'Shipped') {
+              return `<td class="p-3.5 whitespace-nowrap"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">${valStr}</span></td>`;
+            } else if (valStr === 'Cancelled' || valStr === 'Inactive') {
+              return `<td class="p-3.5 whitespace-nowrap"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">${valStr}</span></td>`;
+            }
+
+            if (typeof val === 'number') {
+              if (c.includes('price') || c.includes('revenue') || c.includes('profit') || c.includes('cost') || c.includes('amount') || c.includes('val')) {
+                val = `$${val.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+              } else {
+                val = val.toLocaleString();
+              }
+            }
+            return `<td class="p-3.5 whitespace-nowrap text-white/85">${val !== null ? val : '<span class="text-white/30">null</span>'}</td>`;
+          }).join('')
+        }</tr>`;
+      }).join('');
+    }
+
+    // SQL Console Quick Presets
+    function runPresetQuery(key) {
+      if (sqlPresetQueries[key]) {
+        document.getElementById('sql-input').value = sqlPresetQueries[key];
+        executeConsoleSql();
+      }
+    }
+
+    async function executeConsoleSql() {
+      const sql = document.getElementById('sql-input').value.trim();
+      const timerEl = document.getElementById('sql-timer');
+      const container = document.getElementById('sql-results-container');
+      const thead = document.getElementById('sql-table-head');
+      const tbody = document.getElementById('sql-table-body');
+
+      if (!sql) return;
+      timerEl.innerText = "Executing query in DuckDB...";
+
+      try {
+        const res = await fetch('/api/execute-sql', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({sql: sql})
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          timerEl.innerText = `Error: ${err.detail}`;
+          timerEl.className = "text-xs text-rose-300 font-mono";
+          return;
+        }
+
+        const data = await res.json();
+        timerEl.innerText = `⚡ ${data.execution_time_ms} ms • ${data.row_count} rows returned`;
+        timerEl.className = "text-xs text-emerald-300 font-mono font-semibold";
+
+        container.classList.remove('hidden');
+        if (data.data.length > 0) {
+          const cols = Object.keys(data.data[0]);
+          thead.innerHTML = `<tr>${cols.map(c => `<th class="p-3 whitespace-nowrap">${c}</th>`).join('')}</tr>`;
+          tbody.innerHTML = data.data.map(row => `
+            <tr class="hover:bg-white/[0.04]">${cols.map(c => `<td class="p-3 whitespace-nowrap">${row[c]}</td>`).join('')}</tr>
+          `).join('');
+        } else {
+          thead.innerHTML = '<tr><th class="p-3">Status</th></tr>';
+          tbody.innerHTML = '<tr><td class="p-3 text-white/50">Query returned zero rows.</td></tr>';
+        }
+      } catch (err) {
+        timerEl.innerText = `Network error: ${err}`;
+      }
+    }
+
+    // ========================================================
+    // OLAP Analytical Queries Tab Logic
+    // ========================================================
+    const olapQueries = {
+      1: {
+        title: "Vectorized Rolling 7-Day Window Aggregations",
+        desc: "<b>OLAP Feature:</b> Evaluates <code>ROWS BETWEEN 6 PRECEDING AND CURRENT ROW</code> in vectorized memory morsels without intermediate row buffering, computing daily revenue trends and <code>LAG()</code> velocity deltas.",
+        endpoint: "/api/charts/velocity",
+        sql: `WITH daily_sales AS (
+    SELECT 
+        o.order_date,
+        COUNT(DISTINCT o.order_id) AS order_count,
+        ROUND(SUM(oi.quantity * oi.unit_price * (1 - oi.discount)), 2) AS daily_revenue,
+        ROUND(SUM(oi.quantity * (oi.unit_price - p.cost_price)), 2) AS daily_profit
+    FROM orders o
+    JOIN order_items oi ON o.order_id = oi.order_id
+    JOIN products p ON oi.product_id = p.product_id
+    WHERE o.status != 'Cancelled'
+    GROUP BY o.order_date
+)
+SELECT 
+    order_date,
+    daily_revenue,
+    daily_profit,
+    order_count,
+    ROUND(AVG(daily_revenue) OVER (
+        ORDER BY order_date 
+        ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+    ), 2) AS rolling_avg_rev,
+    ROUND(SUM(daily_revenue) OVER (
+        ORDER BY order_date 
+        ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+    ), 2) AS rolling_cumulative_rev,
+    ROUND(daily_revenue - LAG(daily_revenue, 1) OVER (ORDER BY order_date), 2) AS daily_velocity_delta
+FROM daily_sales
+ORDER BY order_date;`
+      },
+      2: {
+        title: "RFM Segmentation with QUALIFY Clause & date_diff",
+        desc: "<b>OLAP Feature:</b> Modern <code>QUALIFY</code> clause filters window function outputs (ranking top 8 customers per segment) directly without needing nested CTE or subquery wrappers.",
+        endpoint: "/api/charts/rfm",
+        sql: `WITH customer_metrics AS (
+    SELECT 
+        c.customer_id,
+        c.customer_name,
+        c.segment,
+        c.city,
+        c.country,
+        MAX(o.order_date) AS last_order_date,
+        date_diff('day', MAX(o.order_date), CAST('2025-10-15' AS DATE)) AS recency_days,
+        COUNT(DISTINCT o.order_id) AS frequency_orders,
+        ROUND(SUM(oi.quantity * oi.unit_price * (1 - oi.discount)), 2) AS monetary_value,
+        NTILE(4) OVER (ORDER BY SUM(oi.quantity * oi.unit_price * (1 - oi.discount)) DESC) AS spend_quartile,
+        PERCENT_RANK() OVER (ORDER BY COUNT(DISTINCT o.order_id)) AS loyalty_rank
+    FROM customers c
+    JOIN orders o ON c.customer_id = o.customer_id
+    JOIN order_items oi ON o.order_id = oi.order_id
+    WHERE o.status != 'Cancelled'
+    GROUP BY c.customer_id, c.customer_name, c.segment, c.city, c.country
+)
+SELECT 
+    customer_id,
+    customer_name,
+    segment,
+    city,
+    recency_days,
+    frequency_orders,
+    monetary_value,
+    spend_quartile,
+    ROUND(loyalty_rank * 100, 1) AS loyalty_percentile,
+    ROW_NUMBER() OVER (PARTITION BY segment ORDER BY monetary_value DESC) AS segment_rank,
+    CASE 
+        WHEN spend_quartile = 1 AND recency_days <= 30 THEN 'Top Tier VIP'
+        WHEN spend_quartile = 1 AND recency_days > 30 THEN 'High Value (At Risk)'
+        WHEN spend_quartile IN (2, 3) AND recency_days <= 45 THEN 'Engaged Core'
+        ELSE 'Lapsed / Low Frequency'
+    END AS rfm_tier
+FROM customer_metrics
+QUALIFY ROW_NUMBER() OVER (PARTITION BY segment ORDER BY monetary_value DESC) <= 8
+ORDER BY segment, segment_rank;`
+      },
+      3: {
+        title: "Pareto (80/20 Rule) Cumulative Profit Distribution",
+        desc: "<b>OLAP Feature:</b> Calculates running cumulative gross profit via <code>ROWS UNBOUNDED PRECEDING</code> to categorize catalog inventory into Pareto Core contributors vs long-tail items.",
+        endpoint: "/api/charts/pareto",
+        sql: `WITH product_agg AS (
+    SELECT 
+        p.product_id,
+        p.product_name,
+        cat.category_name,
+        cat.department,
+        p.unit_price,
+        p.cost_price,
+        ROUND(((p.unit_price - p.cost_price) / p.unit_price) * 100, 1) AS margin_rate_pct,
+        COALESCE(SUM(oi.quantity), 0) AS total_units_sold,
+        ROUND(COALESCE(SUM(oi.quantity * oi.unit_price * (1 - oi.discount)), 0), 2) AS gross_revenue,
+        ROUND(COALESCE(SUM(oi.quantity * (oi.unit_price - p.cost_price)), 0), 2) AS total_profit
+    FROM products p
+    JOIN categories cat ON p.category_id = cat.category_id
+    LEFT JOIN order_items oi ON p.product_id = oi.product_id
+    LEFT JOIN orders o ON oi.order_id = o.order_id AND o.status != 'Cancelled'
+    GROUP BY p.product_id, p.product_name, cat.category_name, cat.department, p.unit_price, p.cost_price
+)
+SELECT 
+    product_name,
+    category_name,
+    department,
+    unit_price,
+    margin_rate_pct,
+    total_units_sold,
+    gross_revenue,
+    total_profit,
+    ROUND(SUM(total_profit) OVER (ORDER BY total_profit DESC ROWS UNBOUNDED PRECEDING), 2) AS cumulative_profit,
+    ROUND((SUM(total_profit) OVER (ORDER BY total_profit DESC ROWS UNBOUNDED PRECEDING) / 
+           NULLIF(SUM(total_profit) OVER (), 0)) * 100, 2) AS cumulative_profit_pct,
+    CASE 
+        WHEN (SUM(total_profit) OVER (ORDER BY total_profit DESC ROWS UNBOUNDED PRECEDING) / 
+              NULLIF(SUM(total_profit) OVER (), 0)) <= 0.80 THEN 'Pareto Core (Top 80%)'
+        ELSE 'Tail Product'
+    END AS pareto_status
+FROM product_agg
+ORDER BY total_profit DESC;`
+      },
+      4: {
+        title: "Clickstream Funnel & Multi-Touchpoint Conversion",
+        desc: "<b>OLAP Feature:</b> Conditional aggregations (<code>COUNT(CASE WHEN ... THEN 1 END)</code>) across interaction telemetry measuring conversion rate from product view to purchase.",
+        endpoint: "/api/charts/funnel",
+        sql: `SELECT 
+    c.segment,
+    COUNT(ci.interaction_id) AS total_events,
+    COUNT(CASE WHEN ci.action_type = 'view' THEN 1 END) AS views,
+    COUNT(CASE WHEN ci.action_type = 'add_to_cart' THEN 1 END) AS cart_adds,
+    COUNT(CASE WHEN ci.action_type = 'purchase' THEN 1 END) AS purchases,
+    COUNT(CASE WHEN ci.action_type = 'review' THEN 1 END) AS reviews,
+    ROUND(AVG(ci.session_duration_sec), 1) AS avg_duration_sec,
+    ROUND((COUNT(CASE WHEN ci.action_type = 'purchase' THEN 1 END)::DOUBLE / 
+           NULLIF(COUNT(CASE WHEN ci.action_type = 'view' THEN 1 END), 0)) * 100, 2) AS conversion_rate_pct
+FROM customer_interactions ci
+JOIN customers c ON ci.customer_id = c.customer_id
+GROUP BY c.segment
+ORDER BY total_events DESC;`
+      }
+    };
+
+    async function showOlapQuery(id) {
+      document.querySelectorAll('#olap-tabs .olap-tab-btn').forEach(b => {
+        if (Number(b.dataset.q) === id) {
+          b.className = "olap-tab-btn frosted-pill frosted-pill-active px-4 py-2 text-xs font-semibold";
+        } else {
+          b.className = "olap-tab-btn frosted-pill px-4 py-2 text-xs font-medium";
+        }
+      });
+
+      const q = olapQueries[id];
+      document.getElementById('olap-desc').innerHTML = q.desc;
+      document.getElementById('olap-sql-code').innerText = q.sql;
+
+      try {
+        const data = await fetch(q.endpoint).then(r => r.json());
+        const thead = document.getElementById('olap-table-head');
+        const tbody = document.getElementById('olap-table-body');
+
+        if (data.length > 0) {
+          const cols = Object.keys(data[0]);
+          thead.innerHTML = `<tr>${cols.map(c => `<th class="p-3.5 whitespace-nowrap">${c}</th>`).join('')}</tr>`;
+          tbody.innerHTML = data.map(r => `
+            <tr class="hover:bg-white/[0.04] transition">${
+              cols.map(c => {
+                let v = r[c];
+                if (typeof v === 'number' && (c.includes('rev') || c.includes('profit') || c.includes('monetary') || c.includes('price'))) {
+                  v = `$${v.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+                }
+                return `<td class="p-3.5 whitespace-nowrap text-white/85">${v}</td>`;
+              }).join('')
+            }</tr>
+          `).join('');
+        }
+      } catch (err) {
+        console.error('OLAP error:', err);
+      }
+    }
+
+    // ========================================================
+    // Visual Analytics Suite Charts (Frosted Spatial Glass)
+    // ========================================================
+    async function renderVisualAnalytics() {
+      const [paretoData, funnelData, rfmData] = await Promise.all([
+        fetch('/api/charts/pareto').then(r => r.json()),
+        fetch('/api/charts/funnel').then(r => r.json()),
+        fetch('/api/charts/rfm').then(r => r.json()),
+      ]);
+
+      // 1. Pareto Dual-Axis Chart
+      const pCtx = document.getElementById('chart-pareto').getContext('2d');
+      if (chartParetoInst) chartParetoInst.destroy();
+
+      const pLabels = paretoData.map(p => p.product_name);
+      const pProfit = paretoData.map(p => p.total_profit);
+      const pCum = paretoData.map(p => p.cumulative_profit_pct);
+
+      chartParetoInst = new Chart(pCtx, {
+        data: {
+          labels: pLabels,
+          datasets: [
+            {
+              type: 'line',
+              label: 'Cumulative Profit %',
+              data: pCum,
+              borderColor: '#F59E0B',
+              backgroundColor: '#F59E0B',
+              borderWidth: 2.5,
+              tension: 0.2,
+              yAxisID: 'y1',
+              pointRadius: 3
+            },
+            {
+              type: 'bar',
+              label: 'Gross Profit ($)',
+              data: pProfit,
+              backgroundColor: 'rgba(239, 68, 68, 0.45)',
+              borderColor: '#EF4444',
+              borderWidth: 1,
+              borderRadius: 6,
+              yAxisID: 'y'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: 'rgba(255, 255, 255, 0.85)', font: { size: 10 } } },
+            tooltip: {
+              backgroundColor: 'rgba(15, 16, 20, 0.92)',
+              borderColor: 'rgba(239, 68, 68, 0.3)',
+              borderWidth: 1,
+              cornerRadius: 12,
+              callbacks: {
+                label: ctx => ctx.dataset.type === 'line' 
+                  ? ` ${ctx.dataset.label}: ${ctx.raw.toFixed(1)}%` 
+                  : ` ${ctx.dataset.label}: $${Number(ctx.raw).toLocaleString(undefined, {minimumFractionDigits: 2})}`
+              }
+            }
+          },
+          scales: {
+            x: { 
+              grid: { display: false },
+              ticks: { color: 'rgba(255, 255, 255, 0.65)', font: { size: 9 }, maxRotation: 45 } 
+            },
+            y: {
+              grid: { color: 'rgba(255, 255, 255, 0.06)' },
+              ticks: { color: 'rgba(255, 255, 255, 0.65)', font: { size: 10 }, callback: v => `$${v.toLocaleString()}` }
+            },
+            y1: {
+              position: 'right',
+              grid: { display: false },
+              min: 0,
+              max: 105,
+              ticks: { color: '#F59E0B', font: { size: 10 }, callback: v => `${v}%` }
+            }
+          }
+        }
+      });
+
+      // 2. Funnel Conversion Bar Chart
+      const fCtx = document.getElementById('chart-funnel').getContext('2d');
+      if (chartFunnelInst) chartFunnelInst.destroy();
+
+      const fLabels = funnelData.map(f => f.segment);
+      chartFunnelInst = new Chart(fCtx, {
+        type: 'bar',
+        data: {
+          labels: fLabels,
+          datasets: [
+            { label: 'Views', data: funnelData.map(f => f.views), backgroundColor: 'rgba(255, 255, 255, 0.22)', borderRadius: 6 },
+            { label: 'Cart Adds', data: funnelData.map(f => f.cart_adds), backgroundColor: 'rgba(245, 158, 11, 0.75)', borderRadius: 6 },
+            { label: 'Purchases', data: funnelData.map(f => f.purchases), backgroundColor: 'rgba(239, 68, 68, 0.85)', borderRadius: 6 },
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: 'rgba(255, 255, 255, 0.85)', font: { size: 10 } } },
+            tooltip: {
+              backgroundColor: 'rgba(15, 16, 20, 0.92)',
+              borderColor: 'rgba(239, 68, 68, 0.3)',
+              borderWidth: 1,
+              cornerRadius: 12,
+              callbacks: {
+                label: ctx => ` ${ctx.dataset.label}: ${Number(ctx.raw).toLocaleString()} events`
+              }
+            }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: 'rgba(255, 255, 255, 0.65)' } },
+            y: { grid: { color: 'rgba(255, 255, 255, 0.06)' }, ticks: { color: 'rgba(255, 255, 255, 0.65)' } }
+          }
+        }
+      });
+
+      // 3. RFM Persona Scatter
+      const rCtx = document.getElementById('chart-rfm').getContext('2d');
+      if (chartRfmInst) chartRfmInst.destroy();
+
+      const rfmScatterData = rfmData.map(r => ({
+        x: Number(r.recency_days),
+        y: Number(r.monetary_value),
+        name: r.customer_name,
+        orders: r.frequency_orders,
+        tier: r.rfm_tier
+      }));
+
+      chartRfmInst = new Chart(rCtx, {
+        type: 'scatter',
+        data: {
+          datasets: [{
+            label: 'Customers (Recency vs Spend)',
+            data: rfmScatterData,
+            backgroundColor: 'rgba(239, 68, 68, 0.8)',
+            borderColor: '#F59E0B',
+            borderWidth: 1.5,
+            pointRadius: 6.5,
+            pointHoverRadius: 9.5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: 'rgba(255, 255, 255, 0.85)', font: { size: 10 } } },
+            tooltip: {
+              backgroundColor: 'rgba(15, 16, 20, 0.92)',
+              borderColor: 'rgba(239, 68, 68, 0.3)',
+              borderWidth: 1,
+              cornerRadius: 12,
+              callbacks: {
+                label: ctx => {
+                  const p = ctx.raw;
+                  return ` ${p.name} (${p.tier}): Recency=${p.x}d, Spend=$${p.y.toLocaleString(undefined, {minimumFractionDigits: 2})}, Orders=${p.orders}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              title: { display: true, text: 'Recency (Days Since Last Order)', color: 'rgba(255, 255, 255, 0.75)', font: { size: 11 } },
+              grid: { color: 'rgba(255, 255, 255, 0.06)' },
+              ticks: { color: 'rgba(255, 255, 255, 0.65)' }
+            },
+            y: {
+              title: { display: true, text: 'Monetary Spend ($)', color: 'rgba(255, 255, 255, 0.75)', font: { size: 11 } },
+              grid: { color: 'rgba(255, 255, 255, 0.06)' },
+              ticks: { color: 'rgba(255, 255, 255, 0.65)', callback: v => `$${v.toLocaleString()}` }
+            }
+          }
+        }
+      });
+    }
+
+    // ========================================================
+    // Architecture & Engine Stats
+    // ========================================================
+    async function loadArchitecture() {
+      try {
+        const arch = await fetch('/api/architecture').then(r => r.json());
+        const sBody = document.getElementById('arch-schema-body');
+        sBody.innerHTML = arch.tables.map(t => `
+          <tr class="hover:bg-white/[0.04]">
+            <td class="p-3.5 font-bold text-white"><code>${t.table_name}</code></td>
+            <td class="p-3.5 text-emerald-400 font-bold">${t.row_count.toLocaleString()}</td>
+            <td class="p-3.5 text-white/80">${t.column_count}</td>
+            <td class="p-3.5 text-white/60">DuckDB Vectorized (.duckdb)</td>
+            <td class="p-3.5"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Hot Memory Mapped</span></td>
+          </tr>
+        `).join('');
+
+        const setBody = document.getElementById('arch-settings-body');
+        setBody.innerHTML = arch.settings.map(s => `
+          <tr class="hover:bg-white/[0.04]">
+            <td class="p-3.5 text-cyan-300 font-semibold">${s.name}</td>
+            <td class="p-3.5 text-amber-300 font-mono font-bold">${s.value}</td>
+            <td class="p-3.5 text-white/65 text-xs">${s.description}</td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        console.error('Architecture error:', err);
+      }
+    }
+
+    // ========================================================
+    // Product Modal & Insert Form
+    // ========================================================
+    async function loadCategoriesDropdown() {
+      try {
+        categoriesCache = await fetch('/api/categories').then(r => r.json());
+        const sel = document.getElementById('p-cat');
+        sel.innerHTML = categoriesCache.map(c => `
+          <option value="${c.category_id}" class="bg-slate-900 text-white">${c.category_name} (${c.department})</option>
+        `).join('');
+      } catch (err) {
+        console.error('Category error:', err);
+      }
+    }
+
+    function openProductModal() {
+      document.getElementById('modal-error').classList.add('hidden');
+      document.getElementById('product-modal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('p-name').focus(), 50);
+      lucide.createIcons();
+    }
+
+    function closeProductModal() {
+      document.getElementById('product-modal').classList.add('hidden');
+    }
+
+    function handleBackdropClick(e) {
+      if (e.target.id === 'product-modal') {
+        closeProductModal();
+      }
+    }
+
+    async function submitProductForm(e) {
+      e.preventDefault();
+      const errEl = document.getElementById('modal-error');
+      errEl.classList.add('hidden');
+
+      const payload = {
+        product_id: parseInt(document.getElementById('p-id').value),
+        product_name: document.getElementById('p-name').value.trim(),
+        category_id: parseInt(document.getElementById('p-cat').value),
+        unit_price: parseFloat(document.getElementById('p-price').value),
+        cost_price: parseFloat(document.getElementById('p-cost').value),
+        stock_level: parseInt(document.getElementById('p-stock').value),
+      };
+
+      if (!payload.product_name) {
+        errEl.innerText = "Validation error: Product name cannot be blank.";
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      if (payload.cost_price >= payload.unit_price) {
+        errEl.innerText = "Validation error: Unit price must be strictly greater than Cost price for positive gross margin.";
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/products', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          errEl.innerText = err.detail || "Insert failed.";
+          errEl.classList.remove('hidden');
+          return;
+        }
+
+        closeProductModal();
+        showToast(`Product '${payload.product_name}' (ID #${payload.product_id}) committed to DuckDB!`);
+        document.getElementById('add-product-form').reset();
+        
+        // Auto-refresh active table and global metrics
+        loadTable('products');
+        fetchAllData();
+      } catch (err) {
+        errEl.innerText = `Network error: ${err}`;
+        errEl.classList.remove('hidden');
+      }
+    }
+  </script>
+</body>
+</html>

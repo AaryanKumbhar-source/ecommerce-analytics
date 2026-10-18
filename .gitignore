@@ -1,0 +1,57 @@
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+backend/venv/
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+backend/__pycache__/
+
+# Node / Frontend Artifacts
+node_modules/
+frontend/node_modules/
+frontend/dist/
+.npm
+
+# Secrets & Local Environment Configs
+.env
+.env.*
+!.env.example
+backend/.env
+backend/credentials.txt
+
+# IDE / Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Logs & Temporary Files
+*.log
+
+# Explicit Inclusions: Keep Database & Visual Assets in Repository
+!ecommerce_analytics.duckdb
+!static/
+!static/background.jpg
+!static/index.html
