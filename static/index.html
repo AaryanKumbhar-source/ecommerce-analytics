@@ -150,19 +150,19 @@
       <!-- Navigation Pill Items -->
       <nav class="space-y-1.5" id="nav-menu">
         <button onclick="switchTab('dashboard')" class="nav-item active w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-semibold transition text-white bg-gradient-to-r from-red-600/35 to-rose-700/25 border border-red-500/40 shadow-lg shadow-red-950/50" data-view="dashboard">
-          <i data-lucide="layout-dashboard" class="w-4 h-4 text-red-400"></i> Executive Overview
+          <i data-lucide="layout-dashboard" class="w-4 h-4 text-red-400"></i> Overview
         </button>
         <button onclick="switchTab('explorer')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-medium transition text-white/65 hover:text-white hover:bg-white/10" data-view="explorer">
-          <i data-lucide="table-2" class="w-4 h-4 text-amber-400"></i> Explorer & CRUD
+          <i data-lucide="table-2" class="w-4 h-4 text-amber-400"></i> Tables
         </button>
         <button onclick="switchTab('olap')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-medium transition text-white/65 hover:text-white hover:bg-white/10" data-view="olap">
-          <i data-lucide="cpu" class="w-4 h-4 text-rose-400"></i> Core OLAP Engine
+          <i data-lucide="cpu" class="w-4 h-4 text-rose-400"></i> DuckDB
         </button>
         <button onclick="switchTab('analytics')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-medium transition text-white/65 hover:text-white hover:bg-white/10" data-view="analytics">
-          <i data-lucide="line-chart" class="w-4 h-4 text-amber-400"></i> Molten Analytics
+          <i data-lucide="line-chart" class="w-4 h-4 text-amber-400"></i> Analytics
         </button>
         <button onclick="switchTab('architecture')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-medium transition text-white/65 hover:text-white hover:bg-white/10" data-view="architecture">
-          <i data-lucide="database" class="w-4 h-4 text-orange-400"></i> Architecture Info
+          <i data-lucide="database" class="w-4 h-4 text-orange-400"></i> Architecture
         </button>
       </nav>
     </div>
@@ -195,10 +195,7 @@
     <!-- Top Floating Navbar -->
     <header class="h-16 frosted-glass px-6 flex items-center justify-between shrink-0">
       <div class="flex items-center gap-3">
-        <h2 id="page-title" class="text-base font-bold text-white tracking-tight">Executive Overview</h2>
-        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-red-500/15 text-red-300 border border-red-500/30 flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-red-400 animate-ping"></span> Vectorized OLAP Active
-        </span>
+        <h2 id="page-title" class="text-base font-bold text-white tracking-tight">Overview</h2>
       </div>
 
       <div class="flex items-center gap-3">
@@ -725,11 +722,11 @@
       });
 
       const titles = {
-        'dashboard': 'Executive Overview',
-        'explorer': 'Data Explorer & CRUD Management',
-        'olap': 'Core OLAP Analytical Queries',
-        'analytics': 'Spatial Visual Analytics Suite',
-        'architecture': 'DuckDB Architecture & Engine Details'
+        'dashboard': 'Overview',
+        'explorer': 'Tables',
+        'olap': 'DuckDB',
+        'analytics': 'Analytics',
+        'architecture': 'Architecture'
       };
       document.getElementById('page-title').innerText = titles[viewName];
 
