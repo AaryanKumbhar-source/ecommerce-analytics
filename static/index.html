@@ -142,7 +142,7 @@
             ApexAnalytics
           </div>
           <div class="text-[11px] text-white/55 font-medium flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span> DuckDB Molten OLAP
+            <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span> DuckDB OLAP Engine
           </div>
         </div>
       </div>
@@ -321,8 +321,8 @@
         <div class="frosted-glass p-6 space-y-5">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h3 class="font-bold text-white text-lg">Relational Table Explorer & Mutation</h3>
-              <p class="text-xs text-white/60">Live dynamic scan of DuckDB in-process storage</p>
+              <h3 class="font-bold text-white text-lg">Tables & Record Management</h3>
+              <p class="text-xs text-white/60">Live dynamic scan and record mutation of DuckDB columnar tables</p>
             </div>
             <div class="flex items-center gap-2.5">
               <button onclick="exportCurrentTableToCsv()" class="frosted-pill px-4 py-2 text-xs font-semibold flex items-center gap-1.5">
@@ -438,8 +438,8 @@
       <section id="view-olap" class="space-y-6 hidden">
         <div class="frosted-glass p-6 space-y-4">
           <div>
-            <h3 class="font-bold text-white text-lg">DuckDB Advanced OLAP Primitives</h3>
-            <p class="text-xs text-white/60">Complex analytical queries demonstrating sliding frames, QUALIFY clause, and vectorized performance</p>
+            <h3 class="font-bold text-white text-lg">DuckDB Analytical Engine</h3>
+            <p class="text-xs text-white/60">Vectorized analytical queries demonstrating sliding frames, QUALIFY clause, and funnel metrics</p>
           </div>
 
           <!-- Query Selection Tabs -->
@@ -475,6 +475,11 @@
       <!-- VIEW 4: VISUAL ANALYTICS SUITE                           -->
       <!-- ======================================================== -->
       <section id="view-analytics" class="space-y-6 hidden">
+        <div class="frosted-glass p-6">
+          <h3 class="font-bold text-white text-lg">Analytics & Visualization Suite</h3>
+          <p class="text-xs text-white/60">Pareto cumulative profit analysis, multi-stage customer funnels, and RFM persona scatter distributions</p>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Pareto Chart -->
           <div class="frosted-glass p-6 space-y-3">
@@ -521,6 +526,11 @@
       <!-- VIEW 5: ARCHITECTURE & ENGINE                            -->
       <!-- ======================================================== -->
       <section id="view-architecture" class="space-y-6 hidden">
+        <div class="frosted-glass p-6">
+          <h3 class="font-bold text-white text-lg">Architecture & Kernel Topology</h3>
+          <p class="text-xs text-white/60">Hardware SIMD vectorization, zero-serialization in-process storage, and relational schema catalog</p>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="frosted-glass p-6 space-y-2">
             <div class="font-bold text-white text-base flex items-center gap-2">
@@ -1011,7 +1021,7 @@
       }
 
       tbody.innerHTML = rows.map(r => {
-        return `<tr class="hover:bg-white/[0.04] transition">${
+        return `<tr class="hover:bg-white/[0.07] transition-colors duration-150">${
           columns.map(c => {
             let val = r[c];
             const valStr = String(val || '');
@@ -1023,14 +1033,16 @@
               return `<td class="p-3.5 whitespace-nowrap"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">${valStr}</span></td>`;
             }
 
-            if (typeof val === 'number') {
+            const isNumeric = typeof val === 'number';
+            if (isNumeric) {
               if (c.includes('price') || c.includes('revenue') || c.includes('profit') || c.includes('cost') || c.includes('amount') || c.includes('val')) {
                 val = `$${val.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
               } else {
                 val = val.toLocaleString();
               }
             }
-            return `<td class="p-3.5 whitespace-nowrap text-white/85">${val !== null ? val : '<span class="text-white/30">null</span>'}</td>`;
+            const fontClass = (isNumeric || c.includes('id') || c.includes('date')) ? 'font-mono text-white/90' : 'text-white/85';
+            return `<td class="p-3.5 whitespace-nowrap ${fontClass}">${val !== null ? val : '<span class="text-white/30">null</span>'}</td>`;
           }).join('')
         }</tr>`;
       }).join('');
@@ -1077,7 +1089,7 @@
           const cols = Object.keys(data.data[0]);
           thead.innerHTML = `<tr>${cols.map(c => `<th class="p-3 whitespace-nowrap">${c}</th>`).join('')}</tr>`;
           tbody.innerHTML = data.data.map(row => `
-            <tr class="hover:bg-white/[0.04]">${cols.map(c => `<td class="p-3 whitespace-nowrap">${row[c]}</td>`).join('')}</tr>
+            <tr class="hover:bg-white/[0.07] transition-colors duration-150">${cols.map(c => `<td class="p-3 whitespace-nowrap font-mono text-white/90">${row[c] !== null ? row[c] : '<span class="text-white/30">null</span>'}</td>`).join('')}</tr>
           `).join('');
         } else {
           thead.innerHTML = '<tr><th class="p-3">Status</th></tr>';
@@ -1254,13 +1266,17 @@ ORDER BY total_events DESC;`
           const cols = Object.keys(data[0]);
           thead.innerHTML = `<tr>${cols.map(c => `<th class="p-3.5 whitespace-nowrap">${c}</th>`).join('')}</tr>`;
           tbody.innerHTML = data.map(r => `
-            <tr class="hover:bg-white/[0.04] transition">${
+            <tr class="hover:bg-white/[0.07] transition-colors duration-150">${
               cols.map(c => {
                 let v = r[c];
-                if (typeof v === 'number' && (c.includes('rev') || c.includes('profit') || c.includes('monetary') || c.includes('price'))) {
+                const isNumeric = typeof v === 'number';
+                if (isNumeric && (c.includes('rev') || c.includes('profit') || c.includes('monetary') || c.includes('price'))) {
                   v = `$${v.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+                } else if (isNumeric) {
+                  v = v.toLocaleString();
                 }
-                return `<td class="p-3.5 whitespace-nowrap text-white/85">${v}</td>`;
+                const fontClass = (isNumeric || c.includes('id') || c.includes('date')) ? 'font-mono text-white/90' : 'text-white/85';
+                return `<td class="p-3.5 whitespace-nowrap ${fontClass}">${v !== null ? v : '<span class="text-white/30">null</span>'}</td>`;
               }).join('')
             }</tr>
           `).join('');
@@ -1456,19 +1472,19 @@ ORDER BY total_events DESC;`
         const arch = await fetch('/api/architecture').then(r => r.json());
         const sBody = document.getElementById('arch-schema-body');
         sBody.innerHTML = arch.tables.map(t => `
-          <tr class="hover:bg-white/[0.04]">
+          <tr class="hover:bg-white/[0.07] transition-colors duration-150">
             <td class="p-3.5 font-bold text-white"><code>${t.table_name}</code></td>
-            <td class="p-3.5 text-emerald-400 font-bold">${t.row_count.toLocaleString()}</td>
-            <td class="p-3.5 text-white/80">${t.column_count}</td>
-            <td class="p-3.5 text-white/60">DuckDB Vectorized (.duckdb)</td>
+            <td class="p-3.5 text-emerald-400 font-bold font-mono">${t.row_count.toLocaleString()}</td>
+            <td class="p-3.5 text-white/80 font-mono">${t.column_count}</td>
+            <td class="p-3.5 text-white/60">DuckDB Columnar (.duckdb)</td>
             <td class="p-3.5"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Hot Memory Mapped</span></td>
           </tr>
         `).join('');
 
         const setBody = document.getElementById('arch-settings-body');
         setBody.innerHTML = arch.settings.map(s => `
-          <tr class="hover:bg-white/[0.04]">
-            <td class="p-3.5 text-cyan-300 font-semibold">${s.name}</td>
+          <tr class="hover:bg-white/[0.07] transition-colors duration-150">
+            <td class="p-3.5 text-cyan-300 font-semibold font-mono">${s.name}</td>
             <td class="p-3.5 text-amber-300 font-mono font-bold">${s.value}</td>
             <td class="p-3.5 text-white/65 text-xs">${s.description}</td>
           </tr>
